@@ -1,15 +1,14 @@
 import os
 import sys
-import random
-import math
 import numpy as np
 import skimage.io
-import matplotlib
-import matplotlib.pyplot as plt
+# from flask import Flask, flash, request, jsonify, url_for
+# from werkzeug.utils import secure_filename
+import time
 
 # Root directory of the project
 ROOT_DIR = os.path.abspath("../")
-
+UPLOAD_FOLDER = '/images/'
 # Import Mask RCNN
 sys.path.append(ROOT_DIR)  # To find local version of the library
 from mrcnn import utils
@@ -18,8 +17,6 @@ from mrcnn import visualize
 # Import COCO config
 sys.path.append(os.path.join(ROOT_DIR, "samples/coco/"))  # To find local version
 import coco
-
-%matplotlib inline 
 
 # Directory to save logs and trained model
 MODEL_DIR = os.path.join(ROOT_DIR, "logs")
@@ -48,6 +45,7 @@ model = modellib.MaskRCNN(mode="inference", model_dir=MODEL_DIR, config=config)
 
 # Load weights trained on MS-COCO
 model.load_weights(COCO_MODEL_PATH, by_name=True)
+model.keras_model._make_predict_function()
 
 # COCO Class names
 # Index of the class in the list is its ID. For example, to get ID of
@@ -67,12 +65,16 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                'keyboard', 'cell phone', 'microwave', 'oven', 'toaster',
                'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',
                'teddy bear', 'hair drier', 'toothbrush']
-
+    
 def getMasks(image_path):
+    file_names = next(os.walk(IMAGE_DIR))[2]
+    #image = skimage.io.imread(os.path.join(IMAGE_DIR, random.choice(file_names)))
     image = skimage.io.imread(os.path.join(ROOT_DIR, image_path))
+
     # Run detection
     results = model.detect([image], verbose=1)
 
     # Visualize results
     r = results[0]
+
     return r['masks']
