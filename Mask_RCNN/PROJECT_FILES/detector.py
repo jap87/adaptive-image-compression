@@ -85,6 +85,6 @@ def getMask(image_path, selected_class_names=['person']):
     return mask
 
 def filter(selected_class_names, detected_ids):
-    classIDs = [class_names.index(i) for i in class_list]
+    classIDs = [class_names.index(i) for i in selected_class_names]
     return [i for i,k in enumerate(detected_ids) if k in classIDs]
     
