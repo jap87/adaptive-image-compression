@@ -13,8 +13,8 @@ UPLOAD_FOLDER = '/images/'
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-@app.route('/api/masks', methods=['POST'])
-def getMasks():
+@app.route('/api/compress', methods=['POST'])
+def compress():
     if 'file' not in request.files:
         return 'error here'
     file = request.files['file']
@@ -27,7 +27,7 @@ def getMasks():
         print(filename)
         file.save(os.path.join(ROOT_DIR + app.config['UPLOAD_FOLDER'], filename))
         time.sleep(3)
-        masks = detector.getMasks('images/' + filename)
+        mask = detector.getMask('images/' + filename)
         # os.remove('images/' + filename)
         # Run detection
         response_body = 'hello'
