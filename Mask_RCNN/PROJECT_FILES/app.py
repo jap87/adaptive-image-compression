@@ -2,7 +2,7 @@ import os
 import sys
 import numpy as np
 import skimage.io
-from flask import Flask, flash, request, jsonify, url_for
+from flask import Flask, flash, request, jsonify, url_for, render_template
 from werkzeug.utils import secure_filename
 import time
 import detector
@@ -26,10 +26,13 @@ def compress():
         filename = secure_filename(file.filename)
         print(filename)
         file.save(os.path.join(ROOT_DIR + app.config['UPLOAD_FOLDER'], filename))
-        time.sleep(3)
         mask = detector.getMask('images/' + filename)
         # os.remove('images/' + filename)
         # Run detection
         response_body = 'hello'
         return response_body
     return 'error at file level'
+
+@app.route('/')
+def index():
+    return render_template('index.html')
