@@ -25,8 +25,8 @@ def compress():
     if file:
         filename = secure_filename(file.filename)
         print(filename)
-        file.save(os.path.join(ROOT_DIR + app.config['UPLOAD_FOLDER'], filename))
-        mask = detector.getMask('images/' + filename)
+        file.save(os.path.join(ROOT_DIR + '/PROJECT_FILES/', filename))
+        mask = detector.getMask(filename)
         # os.remove('images/' + filename)
         # Run detection
         response_body = 'hello'

@@ -2,6 +2,8 @@ import os
 import sys
 import numpy as np
 import skimage.io
+import scipy.misc
+
 # from flask import Flask, flash, request, jsonify, url_for
 # from werkzeug.utils import secure_filename
 import time
@@ -65,15 +67,16 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',
 'teddy bear', 'hair drier', 'toothbrush']
     
-def getMask(image_path, selected_class_names=['person']):
+def getMask(file_name, selected_class_names=['person']):
     file_names = next(os.walk(IMAGE_DIR))[2]
     #image = skimage.io.imread(os.path.join(IMAGE_DIR, random.choice(file_names)))
-    image = skimage.io.imread(os.path.join(ROOT_DIR, image_path))
+    image = skimage.io.imread(os.path.join(ROOT_DIR + '/PROJECT_FILES/', file_name))
     masks = []
     # Run detection
     results = model.detect([image], verbose=1)
     # Only use masks with class names that are in the list
     r = results[0]
+    
     np.save('masks', r['masks'])
 
     if len(selected_class_names) > 0:
@@ -82,7 +85,9 @@ def getMask(image_path, selected_class_names=['person']):
         np.save('testmask', mask)
     else:
         mask = np.logical_or.reduce(r['masks'], axis=2)
-    return mask
+
+    skimage.io.imsave('mask.png', mask.astype(int))
+    return
 
 def filter(selected_class_names, detected_ids):
     classIDs = [class_names.index(i) for i in selected_class_names]
