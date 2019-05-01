@@ -82,12 +82,12 @@ def getMask(file_name, selected_class_names=['person']):
     if len(selected_class_names) > 0:
         masks = r['masks'][:, :, filter(selected_class_names, r['class_ids'])]
         mask = np.logical_or.reduce(masks, axis=2)
-        np.save('testmask', mask)
     else:
         mask = np.logical_or.reduce(r['masks'], axis=2)
 
-    skimage.io.imsave('mask.png', mask.astype(int))
-    return
+
+    # skimage.io.imsave('mask.png', mask.astype(int))
+    skimage.io.imsave('test2.png',mask.astype(int))
 
 def filter(selected_class_names, detected_ids):
     classIDs = [class_names.index(i) for i in selected_class_names]
