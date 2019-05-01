@@ -31,7 +31,7 @@ def compress():
         filename = secure_filename(file.filename)
         file.save(os.path.join(ROOT_DIR + '/PROJECT_FILES/', filename))
         detector.getMask(filename, json.loads(request.form['selected']))
-        results = Compressor.compressImage(filename, 'mask.png')
+        results = Compressor.compressImage(filename, 'mask.png', int(request.form['quality']))
         response_body = jsonify(results)
         return response_body
 

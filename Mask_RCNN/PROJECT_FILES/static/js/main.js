@@ -93,6 +93,7 @@ function upload() {
             toForm.push(cbs[i].value);
         } 
     }
+    formData.append('quality', document.getElementById('numberInput').value)
     formData.append('selected', JSON.stringify(toForm));
     formData.append('file', x.files[0], x.files[0].name);
     request.send(formData);
