@@ -2,7 +2,7 @@ import os
 import sys
 import numpy as np
 import skimage.io
-from flask import Flask, flash, request, jsonify, url_for, render_template
+from flask import Flask, flash, request, jsonify, url_for, render_template, send_file
 from werkzeug.utils import secure_filename
 import time
 import detector
@@ -26,7 +26,7 @@ def compress():
         filename = secure_filename(file.filename)
         print(filename)
         file.save(os.path.join(ROOT_DIR + '/PROJECT_FILES/', filename))
-        mask = detector.getMask(filename)
+        detector.getMask(filename)
         # os.remove('images/' + filename)
         # Run detection
         response_body = 'hello'
