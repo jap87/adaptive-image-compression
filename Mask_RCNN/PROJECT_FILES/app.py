@@ -6,6 +6,7 @@ from flask import Flask, flash, request, jsonify, url_for, render_template, send
 from werkzeug.utils import secure_filename
 import time
 import detector
+import Compressor
 from flask_cors import CORS
 
 ROOT_DIR = os.path.abspath("../")
@@ -30,9 +31,8 @@ def compress():
         print(filename)
         file.save(os.path.join(ROOT_DIR + '/PROJECT_FILES/', filename))
         detector.getMask(filename)
-        # os.remove('images/' + filename)
-        # Run detection
-        response_body = 'hello'
+        results = Compressor.compressImage(filename, 'mask.png')
+        response_body = jsonify(results)
         return response_body
     return 'error at file level'
 
