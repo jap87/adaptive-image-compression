@@ -8,6 +8,7 @@ import time
 import detector
 import Compressor
 from flask_cors import CORS
+import json
 
 ROOT_DIR = os.path.abspath("../")
 UPLOAD_FOLDER = '/images/'
@@ -28,12 +29,12 @@ def compress():
         return 'no file'
     if file:
         filename = secure_filename(file.filename)
-        print(filename)
         file.save(os.path.join(ROOT_DIR + '/PROJECT_FILES/', filename))
-        detector.getMask(filename)
+        detector.getMask(filename, json.loads(request.form['selected']))
         results = Compressor.compressImage(filename, 'mask.png')
         response_body = jsonify(results)
         return response_body
+
     return 'error at file level'
 
 @app.route('/')
