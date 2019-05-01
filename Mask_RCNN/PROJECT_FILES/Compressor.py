@@ -41,7 +41,7 @@ def compressImage(image, mask, quality=50):
     path = ROOT_DIR+UPLOAD_FOLDER
     files = [HYBRID_FILE, LOSSY_FILE, LOSSLESS_FILE]
 
-    out = {path+file : getFileSize(path+file) for file in files}
+    out = {file : getFileSize(path+file) for file in files}
     return out
     
     

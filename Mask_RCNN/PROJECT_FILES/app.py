@@ -6,11 +6,14 @@ from flask import Flask, flash, request, jsonify, url_for, render_template, send
 from werkzeug.utils import secure_filename
 import time
 import detector
+from flask_cors import CORS
 
 ROOT_DIR = os.path.abspath("../")
 UPLOAD_FOLDER = '/images/'
 
 app = Flask(__name__)
+CORS(app)
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/api/compress', methods=['POST'])
