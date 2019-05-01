@@ -2,10 +2,6 @@ import os
 import sys
 import numpy as np
 import skimage.io
-import scipy.misc
-
-# from flask import Flask, flash, request, jsonify, url_for
-# from werkzeug.utils import secure_filename
 import time
 
 # Root directory of the project
@@ -83,10 +79,11 @@ def getMask(file_name, selected_class_names=['person']):
         masks = r['masks'][:, :, filter(selected_class_names, r['class_ids'])]
         mask = np.logical_or.reduce(masks, axis=2)
         np.save('testmask', mask)
+        skimage.io.imsave('static/images/mask.png', mask.astype(int))
+        skimage.io.imsave('mask.png', mask.astype(int))
     else:
         mask = np.logical_or.reduce(r['masks'], axis=2)
-
-    skimage.io.imsave('mask.png', mask.astype(int))
+    
     return
 
 def filter(selected_class_names, detected_ids):
