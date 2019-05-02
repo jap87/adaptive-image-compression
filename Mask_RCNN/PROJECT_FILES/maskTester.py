@@ -11,9 +11,7 @@ def genMask(img, maskPercent):
     rowsCovered, colsCovered = int(rows*maskPercent), int(cols*maskPercent)
     rowsOffset, colsOffset = int((rows-rowsCovered)/2), int((cols-colsCovered)/2)
     mask = np.zeros((rows,cols),dtype=np.uint8)
-    mask[rowsOffset:rowsOffset+rowsCovered, colsOffset:colsOffset+colsCovered]=1
-    skio.imshow(mask)
-    skio.show()
+    mask[rowsOffset:rowsOffset+rowsCovered, colsOffset:colsOffset+colsCovered]=255
     return mask
 
 
