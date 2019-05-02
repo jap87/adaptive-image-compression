@@ -2,11 +2,11 @@ import cv2
 import numpy as np
 import skimage.io as skio
 import os
-
+import skimage.filters as filters 
 
 HYBRID_FILE = "hybrid.png"
 LOSSLESS_FILE = "lossless.png"
-LOSSY_FILE = "lossy.jpg"
+LOSSY_FILE = "lossy.png"
 
 ROOT_DIR = os.path.abspath("./")
 UPLOAD_FOLDER = '/static/images/'
@@ -46,16 +46,6 @@ def compressImage(image, mask, quality=50):
 
     out = {file : getFileSize(path+file) for file in files}
     return out
-    
-
-def bitwiseAnd(img, mask):
-    out = np.array(img.shape)
-    zero = np.array([0,0,0])
-    for i in range(len(mask)):
-        for k in range(len(mask[0])):
-            out[i,k] = np.array([img[i,k,0], img[i,k,1], img[i,k,2]]) if mask[i,k] !=0 else zero
-
-    return out
 
 def genJPG(image, quality):
     '''
@@ -63,7 +53,9 @@ def genJPG(image, quality):
         quality: 0 - 100 level of compression (higher means better)
     '''
     tempDir = LOSSY_FILE
-    save(tempDir, image, jpg_quality=quality)
+    image = (255*filters.gaussian(image, sigma = 2)).astype(np.uint8)
+    save(tempDir, image, png_compression=9)
+    #save(tempDir, image, jpg_quality=quality)
     out = cv2.imread(ROOT_DIR+UPLOAD_FOLDER+tempDir)
     return out
 
