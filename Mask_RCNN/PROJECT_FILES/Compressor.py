@@ -26,17 +26,15 @@ def compressImage(image, mask, quality=50):
         mask: Mask that positively defines area of high-quality, can be either a 2d numpy array or a string of the filepath of an image
         quality: 0 - 100 level of compression (higher means better)
     '''
-
-    
     if isinstance(mask, str):
         mask = cv2.imread(mask,0)
-    mask = np.copy(mask)
+    if isinstance(image, str):
+        image = skio.imread(image)
 
     baseline = genPNG(image)
     compressed = genJPG(baseline, quality)
 
     highQuality = cv2.bitwise_and(baseline,baseline, mask = mask)
-    #highQuality = bitwiseAnd(baseline, mask)
     negativeMask = cv2.bitwise_not(mask)
     lowQuality = cv2.bitwise_and(compressed,compressed, mask = negativeMask)
     hybrid = lowQuality + highQuality
