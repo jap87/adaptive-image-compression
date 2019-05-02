@@ -7,7 +7,6 @@ import random
 def plotMaskChange():
     dataPointsPerSample = 30
     df = genfromtxt('maskRegression.csv', delimiter=',')
-    print()
     y = df[:,1]/df[:,2] 
     numSamples = int(len(df)/dataPointsPerSample)
     print(numSamples)
@@ -23,4 +22,49 @@ def plotMaskChange():
     plt.ylabel('Compression Ratio (Relative to PNG)')
     plt.show()
 
-plotMaskChange()
+def plotMaskChange():
+    numIm = 11
+    dataPointsPerSample = 31
+    df = genfromtxt('backup.csv', delimiter=',')
+    x = df[:,3]
+    y = df[:,1]/df[:,2]/2
+    numSamples = int(len(df)/dataPointsPerSample)
+    for i in range(numSamples):
+        color = np.array([random.random(), random.random(), random.random(), .5])
+    
+        offset = i
+        xPlot = x[i::numIm]
+        yPlot = y[i::numIm]
+        print(xPlot.shape)
+
+        plt.plot(xPlot,yPlot,c=color)
+        plt.scatter(xPlot,yPlot,c=color, marker = '.')
+    plt.title('JPEG Quality vs Compression Ratio | Mask Size = .4 Total')
+    plt.xlabel('JPEG Quality')
+    plt.ylabel('Compression Ratio (Relative to PNG)')
+    plt.show()
+
+def plotThing():
+    dataPointsPerSample = 30
+    df0 = genfromtxt('jpeg30.csv', delimiter=',')
+    df1 = genfromtxt('blur.csv', delimiter=',')
+
+    y0 = df0[:,1]/df0[:,2]
+    y1 = df1[:,1]/df1[:,2]
+    y3 = y0*.9+.1
+    x = df0[:,0]
+
+    offset = 0
+   
+    plt.scatter(x,y0, marker = '.')
+    plt.scatter(x,y1, marker = '.')
+    plt.scatter(x,y3, marker = '.')
+    plt.title('Mask Size vs Compression Ratio per Entropy Technique')
+    plt.xlabel('Mask Size (% Total Area)')
+    plt.ylabel('Compression Ratio (Relative to PNG)')
+    plt.legend(['jp2 - quality:30','disk blur: 5x5 kernel', 'jpeg - quality:30'])
+    plt.show()
+
+
+
+plotThing()

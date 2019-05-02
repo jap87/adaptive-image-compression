@@ -25,7 +25,7 @@ def getImages():
 
 def loop():
     with open("blurTester.csv", 'w') as file:
-        for count, img in enumerate(getImages()):
+        for count, img in enumerate(getImages()):     
             for maskPercent in np.linspace(.05,.95, 30):
                 quality = 30
                 mask = genMask(img, maskPercent)
@@ -35,9 +35,10 @@ def loop():
                 writeString = f'{maskPercent},{original},{hybrid}\n'
                 print(writeString,end='')
                 file.write(writeString)
+            break
         
         
 #loop()
-img = skio.imread('static/images/lossy.png')
-x=img[800:1000,800:1000]
-skio.imsave('output/blur.png',x)
+# img = skio.imread('static/images/jpeg2000.png')
+# x=img[800:1000,800:1000]
+# skio.imsave('output/jp2.png',x)

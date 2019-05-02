@@ -6,7 +6,7 @@ import skimage.filters as filters
 
 HYBRID_FILE = "hybrid.png"
 LOSSLESS_FILE = "lossless.png"
-LOSSY_FILE = "lossy.png"
+LOSSY_FILE = "jpeg2000.png"
 
 ROOT_DIR = os.path.abspath("./")
 UPLOAD_FOLDER = '/static/images/'
@@ -32,7 +32,9 @@ def compressImage(image, mask, quality=50):
         image = skio.imread(image)
 
     baseline = genPNG(image)
-    compressed = genJPG(baseline, quality)
+    compressed = genJPG(baseline, quality).astype(np.uint8)
+ 
+    print(compressed.shape, mask.shape, baseline.shape)
 
     highQuality = cv2.bitwise_and(baseline,baseline, mask = mask)
     negativeMask = cv2.bitwise_not(mask)
@@ -52,10 +54,11 @@ def genJPG(image, quality):
         img: Image that should be compressed, can be either a 3d numpy array or a string of the filepath of an image
         quality: 0 - 100 level of compression (higher means better)
     '''
-    tempDir = LOSSY_FILE
-    image = (255*filters.gaussian(image, sigma = 2)).astype(np.uint8)
-    save(tempDir, image, png_compression=9)
+    
+    # image = (255*filters.gaussian(image, sigma = 2)).astype(np.uint8)
+    # save(tempDir, image, png_compression=9)
     #save(tempDir, image, jpg_quality=quality)
+    tempDir = LOSSY_FILE
     out = cv2.imread(ROOT_DIR+UPLOAD_FOLDER+tempDir)
     return out
 
