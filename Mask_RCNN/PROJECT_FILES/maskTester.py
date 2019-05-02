@@ -12,6 +12,8 @@ def genMask(img, maskPercent):
     rowsOffset, colsOffset = int((rows-rowsCovered)/2), int((cols-colsCovered)/2)
     mask = np.zeros((rows,cols),dtype=np.uint8)
     mask[rowsOffset:rowsOffset+rowsCovered, colsOffset:colsOffset+colsCovered]=1
+    skio.imshow(mask)
+    skio.show()
     return mask
 
 
@@ -21,15 +23,17 @@ def getImages():
 
 
 with open("maskRegression.csv", 'w') as file:
-    for maskPercent in np.linspace(.05,.95, 30):
-        for img in getImages():
+    for count, img in enumerate(getImages()):
+        for maskPercent in np.linspace(.05,.95, 30):
             quality = 30
             mask = genMask(img, maskPercent)
             out = Compressor.compressImage(img, mask, quality)
             original = out['lossless.png']
             hybrid = out['hybrid.png']
-            file.write(f'{maskPercent},{original},{hybrid}\n')
-        print(maskPercent)
+            writeString = f'{maskPercent},{original},{hybrid}\n'
+            print(writeString,end='')
+            file.write(writeString)
+       
         
 
   
