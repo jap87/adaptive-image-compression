@@ -1,6 +1,6 @@
 # adaptive-image-compression
 
-This repository is a clone of https://github.com/matterport/Mask_RCNN. The implementation of this project can be found in PROJECT_FILES, as our application depends on Mask R-CNN's Keras model.
+This repository is a clone of https://github.com/matterport/Mask_RCNN, as our system depends on Mask R-CNN's Keras model. The implementation of this project can be found in PROJECT_FILES.
 
 app.py initializes a Flask HTTP server which serves our web application and exposes our compression functionality. For the web app, the template it is in templates/index.html, the javascript is in static/js/main.js, and the css is in static/css/main.css.
 
